@@ -48,8 +48,6 @@ static job jobs[MAXJOBS];
 // addjob is used in two scenarios:
 // 1. When adding a new job.
 // 2. When resuming a suspended job and running it in the background.
-// TODO: remove updating the status from this function and use setjobstatus
-// instead.
 int addjob(pid_t pid, Status st) {
   job *free_job;
   for (int i = 0; i < MAXJOBS; i++) {
@@ -91,19 +89,6 @@ int setjobstat(pid_t pid, Status st) {
     }
   }
   return -1;
-}
-
-job *findjob(pid_t pid) {
-  for (int i = 0; i < MAXJOBS; i++) {
-    job *j = &jobs[i];
-
-    // An entry already exists for this pid;
-    // TODO: should it ignore terminated jobs?
-    if (j->pid == pid) {
-      return j;
-    }
-  }
-  return NULL;
 }
 
 char *jstatus_str(Status st) {
